@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    
+    <title>Invoice creator</title>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1 class="main-title">Invoice creator</h1>
+            <p class="sub-title">Thanks for choosing GoodCorp, LLC!</p>
+        </div>       
+    </header>
+
+    <main class="main-body">
+        <div class="container main-container">
+            <div id="service-list-el" class="services">
+                <!-- display service button here -->
+            </div>
+
+            <div class="services-column-header">
+                <p class="column-header-task">Task</p>
+                <p class="column-header-total">Total</p>
+            </div>
+
+            <ul id="invoice-list-el" class="section-invoice-item">
+                <!-- display invoice item here -->
+            </ul>
+
+            <hr>
+
+            <div class="total-column-header">
+                <p class="column-header-task">Notes</p>
+                <p class="column-header-total">Total Amount</p>
+            </div>
+            <div id="invoice-total-el" class="invoice-total">
+                <p></p>
+                <span class="total-amount"><span class="dollar-sign">$</span>0</span>
+            </div>
+
+            <button id="send-invoice-btn" class="btn btn-send-invoice"><img class="email-icon" src="images/Mail.png" alt="mail icon">Send invoice</button>
+        </div>
+    </main>
+
+<script src="index.js"></script>    
+</body>
+</html>
