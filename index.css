@@ -89,8 +89,9 @@ h3 {font-size: var(--fs-h3);}
 }
 
 .btn-clicked {
-    color: #aeb3e4;
-    background-color: #f6f7e4;
+    color: #4b525c;
+    background-color: #f8facc;
+    text-decoration: line-through;
 }
 
 .services-column-header,

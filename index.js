@@ -13,76 +13,52 @@ let invoiceItem = []
 
 // display service
 const servicesHtml = services.map(service => {
-    const {id,name, amount} = service
+    const {id, name, amount} = service
     return `<button data-btn-service data-id=${id} class="btn btn-service">${name}: $${amount}</button>`
 }).join("")
 
 serviceListEL.innerHTML = servicesHtml
 
-
-
-
 //adding function to buttons
-const serviceBtn = document.querySelectorAll("[data-btn-service]")
-serviceBtn.forEach((button, index) => {
-    button.addEventListener("click", () => {
-        const serviceItem = services[index]
+serviceListEL.addEventListener('click', e => {
+    if (e.target.className === "btn btn-service") {
+        const thisButton = e.target
+        const serviceId = thisButton.dataset.id
+        const serviceItem = services.find(service => service.id == serviceId)
         if (!invoiceItem.includes(serviceItem)) {
-            invoiceItem.push(serviceItem)  
-            createItemEl(serviceItem, index)
-            displayTotalAmount() 
-            changeBtnBg(button)
+            invoiceItem.push(serviceItem)          
+            invoiceListEl.innerHTML += getInvoiceHtml(serviceItem)
+            thisButton.classList.add('btn-clicked')
+            displayTotalAmount()
         }
-        // button.classList.add('btn-clicked')
-    })
+    }
 })
 
-function changeBtnBg(button) {
-    button.classList.add('btn-clicked')
+function getInvoiceHtml(service) {
+    const invoiceItemHtml = `
+    <li class="invoice-item" data-id=${service.id}>
+        <p class="service-name">${service.name}</p>
+        <button class="btn-remove" id="remove-el">Remove</button>
+        <span class="service-amount">${service.amount}<span class="item-dollar-sign">$</span></span>
+    </li>`
+
+    return invoiceItemHtml
 }
 
-
-function createItemEl(serviceItem, index) {
-    const itemli = document.createElement('li')
-    itemli.classList.add("invoice-item")
-
-    const itemPara = document.createElement('p')
-    itemPara.classList.add("service-name")
-    itemPara.textContent = serviceItem.name
-
-    const itemBtn = document.createElement('button')
-    itemBtn.classList.add("btn-remove")
-    itemBtn.setAttribute("id","remove-el")
-    itemBtn.textContent = "Remove"
-
-    const itemSpan = document.createElement('span')
-    itemSpan.classList.add("service-amount")
-    itemSpan.textContent = serviceItem.amount
-
-    const dollarSpan = document.createElement('span')
-    dollarSpan.classList.add('item-dollar-sign')
-    dollarSpan.textContent = "$"
-
-    itemSpan.appendChild(dollarSpan)
-    itemli.appendChild(itemPara)
-    itemli.appendChild(itemBtn)
-    itemli.appendChild(itemSpan)
-    invoiceListEl.appendChild(itemli)
-
-    //remove button
-    itemBtn.addEventListener("click", () => {
-        removeInvoiceItem(index, itemli)
-    })
-}
-
-
-function removeInvoiceItem(index, itemli) {
-    invoiceItem = invoiceItem.filter(item => item !== services[index])
-    invoiceListEl.removeChild(itemli)
-    displayTotalAmount()  
-    serviceBtn[index].classList.remove('btn-clicked')
-}
-
+//remove button
+invoiceListEl.addEventListener('click', e => {
+    if (e.target.className === "btn-remove") {
+        const thisButton = e.target
+        const listItem = thisButton.parentNode
+        const listItemId = listItem.dataset.id
+        // const itemName = item.querySelector('.service-name').textContent
+        // invoiceItem = invoiceItem.filter(item => item.name !== itemName)
+        invoiceItem = invoiceItem.filter(item => item.id != listItemId)
+        removeButtonStyle(listItemId)
+        invoiceListEl.removeChild(listItem)
+        displayTotalAmount()
+    }
+})
 
 //total amount
 function displayTotalAmount() { 
@@ -102,18 +78,35 @@ function displayTotalAmount() {
         invoiceTotalEl.innerHTML =  invoiceTotalHtml  
 }
 
-
-
 //send invoice
 sendInvoiceBtn.addEventListener("click",() => {
     invoiceItem = []
     invoiceListEl.innerHTML = ""
-    serviceBtn.forEach(button => {
-        button.classList.remove('btn-clicked')
-    })
-
+    removeAllButtonStyle()
     const invoiceTotalHtml = `<p></p>
     <span class="total-amount"><span class="dollar-sign">$</span>0</span>`
     invoiceTotalEl.innerHTML =  invoiceTotalHtml 
 })
+
+function removeAllButtonStyle() {
+    const serviceBtn = serviceListEL.querySelectorAll('.btn-service')
+    serviceBtn.forEach(button => {
+        button.classList.remove('btn-clicked')
+    })
+}
+
+function removeButtonStyle(itemId) {
+    const serviceBtn = serviceListEL.querySelectorAll('.btn-service')
+    serviceBtn.forEach(button => {
+        if(button.dataset.id === itemId) {
+            button.classList.remove('btn-clicked')
+        }
+    })
+}
+
+
+
+
+
+
 
